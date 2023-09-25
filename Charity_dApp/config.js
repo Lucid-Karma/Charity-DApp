@@ -1,0 +1,1 @@
+export const charityContractAddress = 0xF37E018Bd68A71fE60668AD9D79444869B050d45
