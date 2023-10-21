@@ -1,4 +1,4 @@
-const CharityContract = artifacts.require("CharityContract"); //./charityContract.sol
+const CharityContract = artifacts.require("CharityContract"); 
 
 contract("CharityContract", accounts => {
   let charityContract;
@@ -13,7 +13,7 @@ contract("CharityContract", accounts => {
   describe("Add donor and candidate", () => {
     it("adds a donor", async () => {
       await charityContract.addDonor("Lily", "Leslie", {from: user1} );
-      const donor = await charityContract.getDonor(user1);
+      const donor = await charityContract.getUser(user1);
       assert.equal(donor.name, "Lily", "Problem with donor name");
       assert.equal(donor.lastName, "Leslie", "Problem with donor lastname");
     });
@@ -37,14 +37,14 @@ contract("CharityContract", accounts => {
       await charityContract.donate({ from: user1, value: 650 });
 
       await charityContract.createElection(2, {from: owner} );
-      //await charityContract.createElection(2, {from: owner} );
+      
       const election = await charityContract.getElection(1);
       assert.equal(election.currentVoteCount, 0, "Problem with current election's vote count");
       assert.equal(election.totalVoteToEnd, 2, "Problem with current election's totalVoteToEnd variable.");
       assert.equal(election.isActive, true, "Problem with current election's active state")
     });
 
-    it("votes", async () => {   //!!!
+    it("votes", async () => {   
       await charityContract.addCandidate(user2, "I'm a hardworking person.", "gonna be a doctor", "no", 15, 83, { from: owner });
       await charityContract.addDonor("Lily", "Leslie", {from:user1});
       await charityContract.donate({ from: user1, value: 650 });
@@ -53,7 +53,7 @@ contract("CharityContract", accounts => {
       
       await charityContract.vote(1, {from: user1});
   
-      const election = await charityContract.getElection(1);    // !!??
+      const election = await charityContract.getElection(1);    
       assert.equal(election.currentVoteCount, 1, "Problem with current election's vote count after vote");
       assert.equal(election.totalVoteToEnd, 2, "Problem with current election's totalVoteToEnd variable after vote");
       assert.equal(election.isActive, true, "Problem with current election's active state after vote")
@@ -102,7 +102,7 @@ contract("CharityContract", accounts => {
     
       const donation = await charityContract.getTotalDonations();
     
-      const expectedDonation = web3.utils.toBN(620); // Beklenen değeri BigNumber'a çevir
+      const expectedDonation = web3.utils.toBN(620); // Convert expected value to BigNumber.
       assert.equal(donation.toString(), expectedDonation.toString(), "Problem with donation distribution");
     });
   });
